@@ -13,6 +13,7 @@ import com.facebook.login.LoginResult;
 
 import java.util.Observable;
 
+import basecamp.everest.com.basecamp.MainActivity;
 import io.reactivex.disposables.CompositeDisposable;
 
 public class LoginViewModel extends Observable{
@@ -33,18 +34,19 @@ public class LoginViewModel extends Observable{
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
-                        //TODO: go to another activity
                         Toast.makeText(context.getApplicationContext(), "Login Success", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(context, MainActivity.class);
+                        context.startActivity(intent);
                     }
 
                     @Override
                     public void onCancel() {
-                        // App code
+                        Toast.makeText(context.getApplicationContext(), "Login Cancelled", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onError(FacebookException exception) {
-                        // App code
+                        Toast.makeText(context.getApplicationContext(), "Login Failed", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
