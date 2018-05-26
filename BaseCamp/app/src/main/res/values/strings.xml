@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">BaseCamp</string>
+    <string name="login">Login</string>
+
+    <string name="facebook_app_id">171758210180703</string>
+    <string name="fb_login_protocol_scheme">fb171758210180703</string>
+
 </resources>
