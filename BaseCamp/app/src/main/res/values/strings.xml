@@ -1,8 +1,12 @@
 <resources>
     <string name="app_name">BaseCamp</string>
     <string name="login">Login</string>
+    <string name="makes">Makes</string>
 
     <string name="facebook_app_id">171758210180703</string>
     <string name="fb_login_protocol_scheme">fb171758210180703</string>
+
+    <string name="error_message_loading_makes">There seems to have been some error.</string>
+    <string name="default_message_loading_makes">Press the button to load people!</string>
 
 </resources>
