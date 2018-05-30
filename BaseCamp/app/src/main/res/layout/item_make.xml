@@ -14,7 +14,7 @@
 
   <android.support.v7.widget.CardView
       app:cardElevation="5dp"
-      android:layout_margin="20dp"
+      android:layout_margin="10dp"
       android:id="@+id/item_make"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -39,6 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="12dp"
         android:textColor="@color/colorPrimaryDark"
         android:text="@{itemMakeViewModel.name}"
         android:textSize="17sp"
@@ -46,18 +47,6 @@
         tools:text="Make Name"
         tools:ignore="RtlCompat" />
 
-    <TextView
-        android:id="@+id/label_make_id"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:textColor="@color/textColor"
-        android:text="@{itemMakeViewModel.id}"
-        android:textSize="15sp"
-        tools:text="729"
-        tools:ignore="RtlCompat" />
 
     </LinearLayout>
 

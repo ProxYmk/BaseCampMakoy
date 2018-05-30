@@ -18,8 +18,6 @@ public class ItemMakeViewModel extends BaseObservable{
 
     public String getName() { return make.getMakeName(); }
 
-    public String getId() { return make.getMakeID().toString(); }
-
 
     public void onItemClick(View v){
         //TODO: call activity models passing the make
