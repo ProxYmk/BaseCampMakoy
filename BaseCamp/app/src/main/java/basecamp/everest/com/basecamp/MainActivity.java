@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.facebook.AccessToken;
 
 import basecamp.everest.com.basecamp.view.ui.LoginActivity;
+import basecamp.everest.com.basecamp.view.ui.MakesActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,10 +19,13 @@ public class MainActivity extends AppCompatActivity {
 
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+        Intent intent;
         if(!isLoggedIn){
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
+            intent = new Intent(this, LoginActivity.class);
+        }else{
+            intent = new Intent(this, MakesActivity.class);
         }
+        startActivity(intent);
 
     }
 
