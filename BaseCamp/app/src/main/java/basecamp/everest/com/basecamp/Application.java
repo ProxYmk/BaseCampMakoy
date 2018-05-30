@@ -7,12 +7,22 @@ import basecamp.everest.com.basecamp.service.repository.RestClientApi;
 import basecamp.everest.com.basecamp.service.repository.RequestApi;
 import io.reactivex.Scheduler;
 import io.reactivex.schedulers.Schedulers;
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 
 public class Application extends android.app.Application {
 
     private RequestApi requestApi;
     private Scheduler scheduler;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        Realm.init(this);
+        RealmConfiguration config = new RealmConfiguration.Builder().name("myrealm.realm").build();
+        Realm.setDefaultConfiguration(config);
+    }
 
     private static Application get(Context context) {
         return (Application) context.getApplicationContext();

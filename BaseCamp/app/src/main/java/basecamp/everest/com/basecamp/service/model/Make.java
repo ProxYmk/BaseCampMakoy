@@ -5,8 +5,13 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
-public class Make implements Serializable{
+
+public class Make extends RealmObject implements Serializable{
+
+    @PrimaryKey
     @SerializedName("Make_ID")
     @Expose
     private Integer makeID;

@@ -13,6 +13,7 @@ import java.util.Observable;
 
 import basecamp.everest.com.basecamp.Application;
 import basecamp.everest.com.basecamp.R;
+import basecamp.everest.com.basecamp.database.MakeDataBaseHandler;
 import basecamp.everest.com.basecamp.service.model.Make;
 import basecamp.everest.com.basecamp.service.model.MakesResponse;
 import basecamp.everest.com.basecamp.service.repository.RequestApi;
@@ -29,6 +30,7 @@ public class MakeViewModel extends Observable {
     private List<Make> makeList;
     private Context context;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private MakeDataBaseHandler makeDBHandler;
 
     public MakeViewModel(@NonNull Context context) {
         this.context = context;
@@ -37,19 +39,19 @@ public class MakeViewModel extends Observable {
         makeRecycler = new ObservableInt(View.GONE);
         makeLabel = new ObservableInt(View.VISIBLE);
         messageLabel = new ObservableField<>(context.getString(R.string.default_message_loading_makes));
+        makeDBHandler = new MakeDataBaseHandler();
+
     }
 
     public void onLoadMakeList() {
-//        initializeViews();
-//        fetchUsersList();
-        makeList.add(new Make(1,"Honda"));
-        makeList.add(new Make(2,"Honda2"));
-        progressBar.set(View.GONE);
-        makeLabel.set(View.GONE);
-        makeRecycler.set(View.VISIBLE);
-//        makeList.addAll(makes);
-        setChanged();
-        notifyObservers();
+        initializeViews();
+        makeList.clear();
+        makeList = makeDBHandler.getMakeList();
+        if(makeList.size() == 0){
+            fetchUsersList();
+        }else{
+            updateMakeDataList();
+        }
     }
 
     public void initializeViews() {
@@ -70,10 +72,9 @@ public class MakeViewModel extends Observable {
     }
 
     private void handleResponse(MakesResponse makesResponse) {
-        updateMakeDataList(makesResponse.getMakeList());
-        progressBar.set(View.GONE);
-        makeLabel.set(View.GONE);
-        makeRecycler.set(View.VISIBLE);
+        makeDBHandler.insertMakes(makesResponse.getMakeList());
+        makeList.addAll(makesResponse.getMakeList());
+        updateMakeDataList();
     }
 
 
@@ -85,12 +86,14 @@ public class MakeViewModel extends Observable {
         makeRecycler.set(View.GONE);
     }
 
-    private void updateMakeDataList(List<Make> makes) {
-        makes.add(new Make(1,"Honda"));
-        makes.add(new Make(2,"Honda2"));
-//        makeList.addAll(makes);
+
+    private void updateMakeDataList() {
+        progressBar.set(View.GONE);
+        makeLabel.set(View.GONE);
+        makeRecycler.set(View.VISIBLE);
         setChanged();
         notifyObservers();
+
     }
 
     public List<Make> getMakesList() {
@@ -107,5 +110,7 @@ public class MakeViewModel extends Observable {
         unSubscribeFromObservable();
         compositeDisposable.clear();
         context = null;
+        makeDBHandler.closeInstance();
+
     }
 }
