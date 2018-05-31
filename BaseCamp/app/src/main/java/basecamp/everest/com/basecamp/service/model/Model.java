@@ -5,39 +5,46 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 
-public class Make extends RealmObject implements Serializable{
+public class Model extends RealmObject implements Serializable{
 
-    @PrimaryKey
     @SerializedName("Make_ID")
     @Expose
     private Integer makeID;
     @SerializedName("Make_Name")
     @Expose
     private String makeName;
-
-    private RealmList<Model> modelRealmList;
+    @PrimaryKey
+    @SerializedName("Model_ID")
+    @Expose
+    private Integer modelID;
+    @SerializedName("Model_Name")
+    @Expose
+    private String modelName;
 
     /**
      * No args constructor for use in serialization
      *
      */
-    public Make() {
+    public Model() {
     }
 
     /**
      *
      * @param makeName
+     * @param modelID
+     * @param modelName
      * @param makeID
      */
-    public Make(Integer makeID, String makeName) {
+    public Model(Integer makeID, String makeName, Integer modelID, String modelName) {
         super();
         this.makeID = makeID;
         this.makeName = makeName;
+        this.modelID = modelID;
+        this.modelName = modelName;
     }
 
     public Integer getMakeID() {
@@ -56,11 +63,19 @@ public class Make extends RealmObject implements Serializable{
         this.makeName = makeName;
     }
 
-    public RealmList<Model> getModelList() {
-        return modelRealmList;
+    public Integer getModelID() {
+        return modelID;
     }
 
-    public void setModelList(RealmList<Model> modelRealmList) {
-        this.modelRealmList = modelRealmList;
+    public void setModelID(Integer modelID) {
+        this.modelID = modelID;
+    }
+
+    public String getModelName() {
+        return modelName;
+    }
+
+    public void setModelName(String modelName) {
+        this.modelName = modelName;
     }
 }

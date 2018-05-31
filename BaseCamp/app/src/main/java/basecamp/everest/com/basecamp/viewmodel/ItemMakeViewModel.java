@@ -5,6 +5,7 @@ import android.databinding.BaseObservable;
 import android.view.View;
 
 import basecamp.everest.com.basecamp.service.model.Make;
+import basecamp.everest.com.basecamp.view.ui.ModelActivity;
 
 public class ItemMakeViewModel extends BaseObservable{
 
@@ -20,8 +21,7 @@ public class ItemMakeViewModel extends BaseObservable{
 
 
     public void onItemClick(View v){
-        //TODO: call activity models passing the make
-//        context.startActivity(activity.fillDetail(v.getContext(), make));
+        context.startActivity(ModelActivity.fillMake(v.getContext(), make));
     }
 
     public void setMake(Make make) {

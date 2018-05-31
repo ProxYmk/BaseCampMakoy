@@ -4,7 +4,6 @@ import android.content.Context;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -15,88 +14,89 @@ import basecamp.everest.com.basecamp.Application;
 import basecamp.everest.com.basecamp.R;
 import basecamp.everest.com.basecamp.database.MakeDatabaseHandler;
 import basecamp.everest.com.basecamp.service.model.Make;
-import basecamp.everest.com.basecamp.service.model.MakesResponse;
+import basecamp.everest.com.basecamp.service.model.Model;
+import basecamp.everest.com.basecamp.service.model.ModelsResponse;
 import basecamp.everest.com.basecamp.service.repository.RequestApi;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 
-public class MakeViewModel extends Observable {
+public class ModelViewModel extends Observable {
 
     public ObservableInt progressBar;
-    public ObservableInt makeRecycler;
-    public ObservableInt makeLabel;
+    public ObservableInt modelRecycler;
+    public ObservableInt modelLabel;
     public ObservableField<String> messageLabel;
 
-    private List<Make> makeList;
+    private List<Model> modelList;
     private Context context;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private MakeDatabaseHandler makeDBHandler;
 
-    public MakeViewModel(@NonNull Context context) {
-        this.context = context;
-        this.makeList = new ArrayList<>();
-        progressBar = new ObservableInt(View.GONE);
-        makeRecycler = new ObservableInt(View.GONE);
-        makeLabel = new ObservableInt(View.VISIBLE);
-        messageLabel = new ObservableField<>(context.getString(R.string.default_message_loading_makes));
-        makeDBHandler = new MakeDatabaseHandler();
+    private Make make;
 
+    public ModelViewModel(@NonNull Context context, Make make) {
+        this.context = context;
+        this.modelList = new ArrayList<>();
+        this.make = make;
+        progressBar = new ObservableInt(View.GONE);
+        modelRecycler = new ObservableInt(View.GONE);
+        modelLabel = new ObservableInt(View.VISIBLE);
+        messageLabel = new ObservableField<>(context.getString(R.string.default_message_loading_models));
+        makeDBHandler = new MakeDatabaseHandler();
     }
 
-    public void onLoadMakeList() {
+    public void onLoadModelList() {
         initializeViews();
-        makeList.clear();
-        makeList = makeDBHandler.getMakeList();
-        if(makeList.size() == 0){
-            fetchMakeList();
+        modelList.clear();
+        modelList = makeDBHandler.getModelListFromMakeId(make.getMakeID());
+        if(modelList.size() == 0){
+            fetchModelList(make.getMakeName());
         }else{
-            updateMakeDataList();
+            updateModelDataList();
         }
     }
 
     public void initializeViews() {
-        makeLabel.set(View.GONE);
-        makeRecycler.set(View.GONE);
+        modelRecycler.set(View.GONE);
         progressBar.set(View.VISIBLE);
     }
 
-    private void fetchMakeList() {
+    private void fetchModelList(String makeName) {
 
         Application applicationController = Application.create(context);
         RequestApi requestApi = applicationController.getMakeService();
 
-        compositeDisposable.add(requestApi.fetchMakes("json")
+        compositeDisposable.add(requestApi.fetchModels( makeName,"json")
                 .subscribeOn(applicationController.subscribeScheduler())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::handleResponse,this::handleError));
     }
 
-    private void handleResponse(MakesResponse makesResponse) {
-        makeDBHandler.insertMakes(makesResponse.getMakeList());
-        makeList.addAll(makesResponse.getMakeList());
-        updateMakeDataList();
+    private void handleResponse(ModelsResponse modelsResponse) {
+        makeDBHandler.insertModelListInMakeById(modelsResponse.getModelList(), make.getMakeID());
+        modelList.addAll(modelsResponse.getModelList());
+        updateModelDataList();
     }
 
 
     private void handleError(Throwable error) {
-        messageLabel.set(context.getString(R.string.error_message_loading_makes));
+        messageLabel.set(context.getString(R.string.error_message_loading_models));
         progressBar.set(View.GONE);
-        makeLabel.set(View.VISIBLE);
-        makeRecycler.set(View.GONE);
+        modelLabel.set(View.VISIBLE);
+        modelRecycler.set(View.GONE);
     }
 
 
-    private void updateMakeDataList() {
+    private void updateModelDataList() {
         progressBar.set(View.GONE);
-        makeLabel.set(View.GONE);
-        makeRecycler.set(View.VISIBLE);
+        modelLabel.set(View.GONE);
+        modelRecycler.set(View.VISIBLE);
         setChanged();
         notifyObservers();
-
     }
 
-    public List<Make> getMakesList() {
-        return makeList;
+    public List<Model> getModelList() {
+        return modelList;
     }
 
     private void unSubscribeFromObservable() {
@@ -109,7 +109,6 @@ public class MakeViewModel extends Observable {
         unSubscribeFromObservable();
         compositeDisposable.clear();
         context = null;
-        makeDBHandler.closeInstance();
 
     }
 }

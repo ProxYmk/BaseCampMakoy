@@ -3,6 +3,6 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/load_makes"
-        android:title="CARS"
-        app:showAsAction="always"/>
+        android:title="Makes"
+        app:showAsAction="collapseActionView"/>
 </menu>
