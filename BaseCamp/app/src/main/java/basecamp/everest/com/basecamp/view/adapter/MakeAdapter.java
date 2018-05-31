@@ -4,7 +4,6 @@ import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.Collections;
@@ -30,7 +29,7 @@ public class MakeAdapter extends RecyclerView.Adapter<MakeAdapter.MakeAdapterVie
 
     @Override
     public void onBindViewHolder(@NonNull MakeAdapterViewHolder holder, int position) {
-        holder.bindUser(makeList.get(position));
+        holder.bind(makeList.get(position));
     }
 
     @Override
@@ -52,7 +51,7 @@ public class MakeAdapter extends RecyclerView.Adapter<MakeAdapter.MakeAdapterVie
             this.itemMakeBinding = itemMakeBinding;
         }
 
-        void bindUser(Make make){
+        void bind(Make make){
             if(itemMakeBinding.getItemMakeViewModel() == null){
                 itemMakeBinding.setItemMakeViewModel(new ItemMakeViewModel(make, itemView.getContext()));
             }else {

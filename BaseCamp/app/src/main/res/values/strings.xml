@@ -7,6 +7,8 @@
     <string name="fb_login_protocol_scheme">fb171758210180703</string>
 
     <string name="error_message_loading_makes">There seems to have been some error.</string>
+    <string name="error_message_loading_models">There seems to have been some error loading Models</string>
     <string name="default_message_loading_makes">Press the button top to load Makes!</string>
+    <string name="default_message_loading_models">Loading Models!</string>
 
 </resources>
